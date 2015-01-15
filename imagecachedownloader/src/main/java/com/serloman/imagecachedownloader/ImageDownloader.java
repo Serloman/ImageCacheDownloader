@@ -115,7 +115,8 @@ public abstract class ImageDownloader {
         }
 
         protected void onPostExecute(Bitmap result) {
-            cache.put(url, result);
+            if(result!=null)
+                cache.put(url, result);
             listener.imageDownloaded(result);
         }
 
