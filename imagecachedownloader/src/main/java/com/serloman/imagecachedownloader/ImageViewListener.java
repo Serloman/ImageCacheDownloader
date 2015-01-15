@@ -18,4 +18,9 @@ public class ImageViewListener implements DownloadImageListener {
     public void imageDownloaded(Bitmap image) {
         imageView.setImageBitmap(image);
     }
+
+    @Override
+    public void imageError() {
+        imageView.setImageBitmap(null);
+    }
 }

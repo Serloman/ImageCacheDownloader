@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.serloman.imagecachedownloader.CacheImageDownloader;
 import com.serloman.imagecachedownloader.ImageDownloader;
@@ -69,7 +70,14 @@ public class MainActivity extends ActionBarActivity {
             ImageView imageView = (ImageView)rootView.findViewById(R.id.imageViewTest);
 
             ImageDownloader downloader = CacheImageDownloader.getInstance();
-            downloader.downloadImage("http://fc00.deviantart.net/fs71/f/2015/013/3/c/3c026edbe356b22c802e7be0db6fbd0b-d8dt0go.jpg", new ImageViewListener(imageView));
+            downloader.downloadImage("http://fc00.deviantart.net/fs71/f/2015/013/3/c/3c026edbe356b22c802e7be0db6fbd0b-d8dt0go.jpg", new ImageViewListener(imageView){
+                @Override
+                public void imageError() {
+                    super.imageError();
+
+                    Toast.makeText(getActivity(),"Error downloading image", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             return rootView;
         }

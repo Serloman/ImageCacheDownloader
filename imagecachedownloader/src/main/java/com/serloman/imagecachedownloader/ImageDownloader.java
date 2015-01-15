@@ -13,6 +13,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -74,7 +75,7 @@ public abstract class ImageDownloader {
                         // do your work here
                         bitmap = BitmapFactory.decodeStream(inputStream);
                     }
-                    catch(Exception ex)
+                    catch(IOException ex)
                     {
                         ex.printStackTrace();
                     }
@@ -85,13 +86,14 @@ public abstract class ImageDownloader {
                         entity.consumeContent();
                     }
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
                 request.abort();
             } finally {
                 if (client != null) {
                     client.close();
                 }
             }
+
         }
 
         return bitmap;
@@ -115,9 +117,11 @@ public abstract class ImageDownloader {
         }
 
         protected void onPostExecute(Bitmap result) {
-            if(result!=null)
+            if(result!=null) {
                 cache.put(url, result);
-            listener.imageDownloaded(result);
+                listener.imageDownloaded(result);
+            }else
+                listener.imageError();
         }
 
     }
