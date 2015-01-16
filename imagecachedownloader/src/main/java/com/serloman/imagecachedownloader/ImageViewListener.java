@@ -15,6 +15,11 @@ public class ImageViewListener implements DownloadImageListener {
     }
 
     @Override
+    public void downloadStarted() {
+
+    }
+
+    @Override
     public void imageDownloaded(Bitmap image) {
         imageView.setImageBitmap(image);
     }

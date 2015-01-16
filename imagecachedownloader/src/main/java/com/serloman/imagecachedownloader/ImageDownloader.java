@@ -111,11 +111,13 @@ public abstract class ImageDownloader {
         }
 
         protected Bitmap doInBackground(String... urls) {
+            listener.downloadStarted();
             url = urls[0];
 
             return downloadBitmap(url);
         }
 
+        @Override
         protected void onPostExecute(Bitmap result) {
             if(result!=null) {
                 cache.put(url, result);
