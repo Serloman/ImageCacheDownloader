@@ -77,6 +77,18 @@ public class DiskImageCache extends LRUImageCache {
             super.put(url, image);
     }
 
+    @Override
+    public void evictAll() {
+        if(isExternalStorageWritable()) {
+            File[] files = context.getExternalCacheDir().listFiles();
+
+            for(int i=files.length-1;i>-1;i--)
+                files[i].delete();
+        }
+        else
+            super.evictAll();
+    }
+
     private String getKey(String url){
         return Uri.encode(url);
     }

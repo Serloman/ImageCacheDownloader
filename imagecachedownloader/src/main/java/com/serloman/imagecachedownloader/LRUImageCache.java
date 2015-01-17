@@ -52,6 +52,11 @@ public class LRUImageCache implements ImageCache {
         }
     }
 
+    @Override
+    public void evictAll() {
+        mMemoryCache.evictAll();
+    }
+
     private String getKey(String url){
         return Uri.encode(url);
     }

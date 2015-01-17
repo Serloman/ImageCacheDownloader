@@ -13,34 +13,24 @@ import java.util.concurrent.TimeUnit;
  */
 public class CacheImageDownloaderTest extends AndroidTestCase {
 
-    public void testLRUCache(){
-        Bitmap logo = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher);
-        ImageCache cache = new LRUImageCache();
-        String key = "logo";
-
-        assertFalse("Cache hasn't key object", cache.hasImage(key));
-
-        cache.put(key, logo);
-
-        assertTrue("Cache has key object", cache.hasImage(key));
-
-        Bitmap cachedLogo = cache.getImage(key);
-        assertEquals("Object cached is equal to original object", logo, cachedLogo);
+    public void testCaches(){
+        doTestCache(new LRUImageCache());
+        doTestCache(new DiskImageCache(getContext()));
     }
 
-    public void testDiskCache(){
+    private void doTestCache(ImageCache cache){
         Bitmap logo = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher);
-        ImageCache cache = new DiskImageCache(getContext());
         String key = "logo";
 
-        cache.put(key, logo);
+        cache.evictAll();
 
+        assertFalse("Cache hasn't key object", cache.hasImage(key));
+        cache.put(key, logo);
         assertTrue("Cache has key object", cache.hasImage(key));
 
         Bitmap cachedLogo = cache.getImage(key);
         assertEquals("Object cached is equal to original object", logo.getByteCount(), cachedLogo.getByteCount());
     }
-
 
 
 
