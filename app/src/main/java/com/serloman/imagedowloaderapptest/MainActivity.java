@@ -71,8 +71,8 @@ public class MainActivity extends ActionBarActivity {
             ImageView imageView = (ImageView)rootView.findViewById(R.id.imageViewTest);
 
             ImageDownloader downloader;
-            downloader = DiskImageDownloader.getInstance(getActivity());
-//            downloader = CacheImageDownloader.getInstance();
+//            downloader = DiskImageDownloader.getInstance(getActivity());
+            downloader = CacheImageDownloader.getInstance();
             downloader.downloadImage("http://fc00.deviantart.net/fs71/f/2015/013/3/c/3c026edbe356b22c802e7be0db6fbd0b-d8dt0go.jpg", new ImageViewListener(imageView){
                 @Override
                 public void imageError() {

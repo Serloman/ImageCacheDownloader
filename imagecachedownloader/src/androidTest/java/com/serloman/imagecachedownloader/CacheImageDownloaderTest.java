@@ -16,6 +16,7 @@ public class CacheImageDownloaderTest extends AndroidTestCase {
     public void testCaches(){
         doTestCache(new LRUImageCache());
         doTestCache(new DiskImageCache(getContext()));
+        doTestCache(new MixImageCache(getContext()));
     }
 
     private void doTestCache(ImageCache cache){

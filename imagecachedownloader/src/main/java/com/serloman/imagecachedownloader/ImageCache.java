@@ -9,5 +9,6 @@ public interface ImageCache {
     public boolean hasImage(String url);
     public Bitmap getImage(String url);
     public void put(String url, Bitmap image);
+    public void remove(String url);
     public void evictAll();
 }

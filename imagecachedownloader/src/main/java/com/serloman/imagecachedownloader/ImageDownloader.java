@@ -50,8 +50,7 @@ public abstract class ImageDownloader {
 
             try {
                 HttpResponse response = client.execute(request);
-                final int statusCode =
-                        response.getStatusLine().getStatusCode();
+                final int statusCode = response.getStatusLine().getStatusCode();
 
                 if (statusCode != HttpStatus.SC_OK) {
                     Header[] headers = response.getHeaders("Location");
