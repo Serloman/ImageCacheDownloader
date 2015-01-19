@@ -1,7 +1,6 @@
 package com.serloman.imagedowloaderapptest;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,12 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.serloman.imagecachedownloader.CacheImageDownloader;
-import com.serloman.imagecachedownloader.DiskImageDownloader;
+import com.serloman.imagecachedownloader.LRUImageDownloader;
 import com.serloman.imagecachedownloader.ImageDownloader;
 import com.serloman.imagecachedownloader.ImageViewListener;
 
@@ -72,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
 
             ImageDownloader downloader;
 //            downloader = DiskImageDownloader.getInstance(getActivity());
-            downloader = CacheImageDownloader.getInstance();
+            downloader = LRUImageDownloader.getInstance();
             downloader.downloadImage("http://fc00.deviantart.net/fs71/f/2015/013/3/c/3c026edbe356b22c802e7be0db6fbd0b-d8dt0go.jpg", new ImageViewListener(imageView){
                 @Override
                 public void imageError() {
