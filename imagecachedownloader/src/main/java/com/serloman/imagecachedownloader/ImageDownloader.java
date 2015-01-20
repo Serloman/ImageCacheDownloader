@@ -10,9 +10,11 @@ import android.os.Build;
 public abstract class ImageDownloader {
 
     protected ImageCache cache;
+    protected DownloadImageAsyncTaskFactory downloadImageTaskFactory;
 
     public ImageDownloader(){
         cache = new NoImageCache();
+        downloadImageTaskFactory = new DownloadImageAsyncTaskBasicFactory();
     }
 
     public void downloadImage(String url, DownloadImageListener listener){
@@ -26,7 +28,7 @@ public abstract class ImageDownloader {
                 return;
             }
 
-            DownloadImageAsyncTask task = new DownloadImageAsyncTask(cache, listener);
+            AbstractDownloadImageAsyncTask task = downloadImageTaskFactory.newTask(cache, listener);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
                 task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);

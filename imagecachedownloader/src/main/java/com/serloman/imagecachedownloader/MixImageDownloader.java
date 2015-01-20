@@ -22,5 +22,6 @@ public class MixImageDownloader extends ImageDownloader{
 
     private MixImageDownloader(Context context) {
         this.cache = new MixImageCache(context);
+        this.downloadImageTaskFactory = new DownloadImageAsyncTaskBasicFactory();
     }
 }

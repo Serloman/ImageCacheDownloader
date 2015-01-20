@@ -17,37 +17,16 @@ import java.io.InputStream;
 /**
  * Created by Serloman on 19/01/2015.
  */
-public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
-
-    private ImageCache cache;
-    private DownloadImageListener listener;
-    private String url;
+public class DownloadImageAsyncTask extends AbstractDownloadImageAsyncTask {
 
     public DownloadImageAsyncTask(ImageCache cache, DownloadImageListener listener) {
-        this.cache = cache;
-        this.listener = listener;
-    }
-
-    protected Bitmap doInBackground(String... urls) {
-        listener.downloadStarted();
-        url = urls[0];
-
-        return getImage(url);
+        super(cache, listener);
     }
 
     @Override
-    protected void onPostExecute(Bitmap result) {
-        if(result!=null) {
-            cache.put(url, result);
-            listener.imageDownloaded(result);
-        }else
-            listener.imageError();
-    }
+    public Bitmap downloadImage(String url) {
 
-
-    private Bitmap getImage(String url) {
-
-        Bitmap bitmap = null;
+        Bitmap image = null;
         if(url!=null)
         {
             final AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
@@ -55,22 +34,24 @@ public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
             try {
                 HttpResponse response = client.execute(request);
-                final int statusCode = response.getStatusLine().getStatusCode();
-
-                if (statusCode != HttpStatus.SC_OK)
-                    bitmap = getRedirectedImage(response);
-                else
-                    bitmap = getImageFromResponse(response);
-
+                image = tryDownloadImage(response);
             } catch (IOException e) {
                 request.abort();
             } finally {
-                if (client != null)
-                    client.close();
+                client.close();
             }
         }
 
-        return bitmap;
+        return image;
+    }
+
+    private Bitmap tryDownloadImage(HttpResponse response) throws IOException {
+        final int statusCode = response.getStatusLine().getStatusCode();
+
+        if (statusCode != HttpStatus.SC_OK)
+            return getRedirectedImage(response);
+
+        return getImageFromResponse(response);
     }
 
     private Bitmap getRedirectedImage(HttpResponse response){
@@ -78,7 +59,7 @@ public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
         if (headers != null && headers.length != 0) {
             String newUrl = headers[headers.length - 1].getValue();
-            return getImage(newUrl);
+            return downloadImage(newUrl);
         }
 
         return null;
@@ -88,18 +69,8 @@ public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
         final HttpEntity entity = response.getEntity();
 
         if (entity != null) {
-            InputStream inputStream;
             try {
-                inputStream = entity.getContent();
-
-                Bitmap image = BitmapFactory.decodeStream(inputStream);
-
-                if (inputStream != null)
-                    inputStream.close();
-
-                entity.consumeContent();
-
-                return image;
+                return decodeImage(entity);
             }
             catch(IOException ex){
                 ex.printStackTrace();
@@ -108,4 +79,19 @@ public class DownloadImageAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
         return null;
     }
+
+    private Bitmap decodeImage(HttpEntity entity) throws IOException {
+        InputStream inputStream = entity.getContent();
+
+        Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+        if (inputStream != null)
+            inputStream.close();
+
+        entity.consumeContent();
+
+        return image;
+    }
+
+
 }

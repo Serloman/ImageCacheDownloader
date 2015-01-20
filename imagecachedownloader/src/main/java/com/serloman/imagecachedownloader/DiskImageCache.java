@@ -15,12 +15,15 @@ import java.io.IOException;
 /**
  * Created by Serloman on 15/01/2015.
  */
-public class DiskImageCache extends LRUImageCache {
+public class DiskImageCache implements ImageCache {
 
     private Context context;
 
+    private LRUImageCache memoryCache;
+
     public DiskImageCache(Context context){
         this.context = context;
+        memoryCache = new LRUImageCache();
     }
 
     @Override
@@ -30,7 +33,7 @@ public class DiskImageCache extends LRUImageCache {
             File file = new File(context.getExternalCacheDir(), key);
             return file.exists();
         }else
-            return super.hasImage(url);
+            return memoryCache.hasImage(url);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class DiskImageCache extends LRUImageCache {
                 }
             }
         }else
-            return super.getImage(url);
+            return memoryCache.getImage(url);
 
         return null;
     }
@@ -74,7 +77,7 @@ public class DiskImageCache extends LRUImageCache {
                 e.printStackTrace();
             }
         }else
-            super.put(url, image);
+            memoryCache.put(url, image);
     }
 
     @Override
@@ -86,7 +89,7 @@ public class DiskImageCache extends LRUImageCache {
                 files[i].delete();
         }
         else
-            super.evictAll();
+            memoryCache.evictAll();
     }
 
     @Override
@@ -99,7 +102,7 @@ public class DiskImageCache extends LRUImageCache {
                 file.delete();
         }
         else
-            super.remove(url);
+            memoryCache.remove(url);
     }
 
     private String getKey(String url){

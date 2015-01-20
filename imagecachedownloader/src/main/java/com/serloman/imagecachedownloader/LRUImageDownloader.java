@@ -12,6 +12,7 @@ public class LRUImageDownloader extends ImageDownloader{
 
     private LRUImageDownloader() {
         this.cache = new LRUImageCache();
+        this.downloadImageTaskFactory = new DownloadImageAsyncTaskBasicFactory();
     }
 
 }

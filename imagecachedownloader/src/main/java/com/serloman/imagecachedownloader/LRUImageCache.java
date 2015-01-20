@@ -17,7 +17,7 @@ public class LRUImageCache implements ImageCache {
     }
     private List<EvictListener> listeners;
 
-    protected LruCache<String, Bitmap> mMemoryCache;
+    private LruCache<String, Bitmap> mMemoryCache;
 
     public LRUImageCache(){
         this((int) (Runtime.getRuntime().maxMemory() / 1024));
