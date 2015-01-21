@@ -1,8 +1,13 @@
 package com.serloman.imagecachedownloader;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.test.ActivityUnitTestCase;
+import android.test.AndroidTestCase;
 import android.test.InstrumentationTestCase;
+import android.test.mock.MockContext;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -10,95 +15,110 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Serloman on 21/01/2015.
  */
-public class ImageDownloaderTest extends InstrumentationTestCase {
-
-    protected void setUp() throws Exception{
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception{
-        super.tearDown();
-    }
+public class ImageDownloaderTest extends AndroidTestCase {
 
     public void testImageDownloads() throws Throwable {
-        executeDownloadTest(LRUImageDownloader.getInstance());
-    }
-
-    private void executeDownloadTest(final ImageDownloader downloader) throws Throwable {
-        final String url = "http://serlocorp.com/whatsart/images/whatsart_icon_app.png";
         final CountDownLatch signal = new CountDownLatch(1);
 
-        runTestOnUiThread(new Runnable() {
-            public void run() {
+        final ListenerExecuted assertion = new ListenerExecuted();
+        final MockListener listener = new MockListener(signal, getLogoMock(getContext()), assertion);
+        final MockImageDownloader mockImageDownloader = new MockImageDownloader(getContext());
+        final String mockUrl = "Download Bitmap is mocked. Url not needed";
 
-                DownloadImageListener listener = new DownloadImageListener(){
-
-                    @Override
-                    public void downloadStarted() {
-
-                    }
-
-                    @Override
-                    public void imageDownloaded(Bitmap image) {
-                        assertTrue(false);
-
-                        signal.countDown();
-                    }
-
-                    @Override
-                    public void imageError() {
-                        assertTrue(false);
-
-                        signal.countDown();
-                    }
-                };
-
-                final DownloadImageAsyncTask task = new DownloadImageAsyncTask(new LRUImageCache(), listener){
-                    @Override
-                    protected Bitmap doInBackground(String... urls) {
-                        try{
-                            return super.doInBackground(urls);
-                        }catch(Exception ex){
-                            ex.printStackTrace();
-                        }
-
-                        return null;
-                    }
-                };
-                task.execute(url);
-
-//                downloader.downloadImage(url, listener);
-            }
-        });
+        mockImageDownloader.downloadImage(mockUrl, listener);
 
         signal.await(10, TimeUnit.SECONDS);
 
+        assertTrue(assertion.started);
+        assertTrue(assertion.finished);
+    }
+
+    private static Bitmap getLogoMock(Context context){
+        return BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
     }
 
 
+    private static class MockImageDownloader extends ImageDownloader{
 
-/** /
-    private static class DownloadImageAsyncTaskTest extends DownloadImageAsyncTask{
+        public MockImageDownloader(Context context){
+            this.cache = new LRUImageCache();
+            this.downloadImageTaskFactory = new MockFactory(context);
+        }
+    }
 
-        CountDownLatch signal;
+    private static class MockFactory implements DownloadImageAsyncTaskFactory{
 
-        public DownloadImageAsyncTaskTest(ImageCache cache, DownloadImageListener listener, final CountDownLatch signal) {
+        private Context context;
+
+        public MockFactory(Context context){
+            this.context = context;
+        }
+
+        @Override
+        public AbstractDownloadImageAsyncTask newTask(ImageCache cache, DownloadImageListener listener) {
+            return new MockDownloadTask(context, cache, listener);
+        }
+    }
+
+    private static class MockDownloadTask extends AbstractDownloadImageAsyncTask{
+
+        private Context context;
+
+        public MockDownloadTask(Context context, ImageCache cache, DownloadImageListener listener) {
             super(cache, listener);
 
+            this.context = context;
+        }
+
+        @Override
+        public Bitmap downloadImage(String url) {
+            return getLogoMock(context);
+        }
+    };
+
+    private static class MockListener implements DownloadImageListener{
+
+        CountDownLatch signal;
+        Bitmap expectedImage;
+        ListenerExecuted assertion;
+
+        public MockListener(final CountDownLatch signal, Bitmap expectedImage, ListenerExecuted assertion){
             this.signal = signal;
+
+            this.expectedImage = expectedImage;
+            this.assertion = assertion;
         }
 
         @Override
-        protected Bitmap doInBackground(String... urls) {
-            return super.doInBackground(urls);
+        public void downloadStarted() {
+            assertion.started = true;
         }
 
         @Override
-        protected void onPostExecute(Bitmap result) {
-            super.onPostExecute(result);
+        public void imageDownloaded(Bitmap image) {
+            assertion.finished = true;
+
+            assertEquals(expectedImage.getByteCount(), image.getByteCount());
+
+            signal.countDown();
+        }
+
+        @Override
+        public void imageError() {
+            assertion.finished = true;
 
             signal.countDown();
         }
     }
-/**/
+
+    private static class ListenerExecuted{
+        boolean started;
+        boolean finished;
+
+        public ListenerExecuted(){
+            this.started = false;
+            this.finished = false;
+        }
+    }
+
 }
