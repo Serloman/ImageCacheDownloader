@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Serloman on 15/01/2015.
  */
-public class CacheImageDownloaderTest extends AndroidTestCase {
+public class ImageCacheTest extends AndroidTestCase {
 
     public void testCaches(){
         doTestCache(new LRUImageCache());
