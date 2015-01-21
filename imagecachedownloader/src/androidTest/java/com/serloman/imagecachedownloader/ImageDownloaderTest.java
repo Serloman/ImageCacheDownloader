@@ -17,17 +17,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImageDownloaderTest extends AndroidTestCase {
 
-    public void testImageDownloads() throws Throwable {
-        final CountDownLatch signal = new CountDownLatch(1);
+    public void testImageDownloader() throws Throwable {
+        executeImageDownloaderTest(new MockImageDownloader(getContext()));
+    }
 
+    private void executeImageDownloaderTest(ImageDownloader imageDownloader) throws InterruptedException {
+        final CountDownLatch signal = new CountDownLatch(1);
         final ListenerExecuted assertion = new ListenerExecuted();
         final MockListener listener = new MockListener(signal, getLogoMock(getContext()), assertion);
-        final MockImageDownloader mockImageDownloader = new MockImageDownloader(getContext());
         final String mockUrl = "Download Bitmap is mocked. Url not needed";
 
-        mockImageDownloader.downloadImage(mockUrl, listener);
-
-        signal.await(10, TimeUnit.SECONDS);
+        imageDownloader.downloadImage(mockUrl, listener);
+        signal.await(5, TimeUnit.SECONDS);
 
         assertTrue(assertion.started);
         assertTrue(assertion.finished);
@@ -37,11 +38,10 @@ public class ImageDownloaderTest extends AndroidTestCase {
         return BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
     }
 
-
     private static class MockImageDownloader extends ImageDownloader{
 
         public MockImageDownloader(Context context){
-            this.cache = new LRUImageCache();
+            this.cache = new MockImageCache();
             this.downloadImageTaskFactory = new MockFactory(context);
         }
     }
@@ -109,6 +109,10 @@ public class ImageDownloaderTest extends AndroidTestCase {
 
             signal.countDown();
         }
+    }
+
+    private static class MockImageCache extends NoImageCache{
+
     }
 
     private static class ListenerExecuted{

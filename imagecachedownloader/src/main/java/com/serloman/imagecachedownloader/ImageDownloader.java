@@ -36,33 +36,4 @@ public abstract class ImageDownloader {
                 task.execute(url);
         }
     }
-
-
-    private static class NoImageCache implements ImageCache{
-
-        @Override
-        public boolean hasImage(String url) {
-            return false;
-        }
-
-        @Override
-        public Bitmap getImage(String url) {
-            return null;
-        }
-
-        @Override
-        public void put(String url, Bitmap image) {
-
-        }
-
-        @Override
-        public void remove(String url) {
-
-        }
-
-        @Override
-        public void evictAll() {
-
-        }
-    }
 }
