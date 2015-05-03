@@ -31,8 +31,12 @@ public class MixImageCache implements ImageCache, LRUImageCache.EvictListener{
 
         image = memoryCache.getImage(url);
 
-        if(null==image && diskCache.isExternalStorageWritable())
+        if(null==image && diskCache.isExternalStorageWritable()){
             image = diskCache.getImage(url);
+
+            if(image!=null)
+                memoryCache.put(url, image);
+        }
 
         return image;
     }
