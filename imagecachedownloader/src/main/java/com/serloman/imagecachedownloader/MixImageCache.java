@@ -43,6 +43,7 @@ public class MixImageCache implements ImageCache, LRUImageCache.EvictListener{
 
     @Override
     public void put(String url, Bitmap image) {
+        diskCache.put(url, image);
         memoryCache.put(url, image);
     }
 
