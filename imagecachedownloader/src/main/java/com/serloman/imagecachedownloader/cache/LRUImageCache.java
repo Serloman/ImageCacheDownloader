@@ -13,7 +13,7 @@ import java.util.List;
 public class LRUImageCache implements ImageCache {
 
     public interface EvictListener{
-        public void imageEvicted(boolean evicted, String key, Bitmap oldImage, Bitmap newImage);
+        void imageEvicted(boolean evicted, String key, Bitmap oldImage, Bitmap newImage);
     }
     private List<EvictListener> listeners;
 
