@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.serloman.imagecachedownloader.LRUImageDownloader;
-import com.serloman.imagecachedownloader.ImageDownloader;
-import com.serloman.imagecachedownloader.ImageViewListener;
+import com.serloman.imagecachedownloader.downloader.LRUImageDownloader;
+import com.serloman.imagecachedownloader.downloader.ImageDownloader;
+import com.serloman.imagecachedownloader.listener.ImageViewListener;
 
 
 public class MainActivity extends ActionBarActivity {

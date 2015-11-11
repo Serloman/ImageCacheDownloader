@@ -1,4 +1,4 @@
-package com.serloman.imagecachedownloader;
+package com.serloman.imagecachedownloader.listener;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;

@@ -1,9 +1,11 @@
-package com.serloman.imagecachedownloader;
+package com.serloman.imagecachedownloader.task;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
-import android.os.AsyncTask;
+
+import com.serloman.imagecachedownloader.cache.ImageCache;
+import com.serloman.imagecachedownloader.listener.DownloadImageListener;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;

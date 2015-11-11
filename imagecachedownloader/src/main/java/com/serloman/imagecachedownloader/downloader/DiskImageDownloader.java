@@ -1,6 +1,8 @@
-package com.serloman.imagecachedownloader;
+package com.serloman.imagecachedownloader.downloader;
 
 import android.content.Context;
+
+import com.serloman.imagecachedownloader.cache.DiskImageCache;
 
 /**
  * Created by Serloman on 16/01/2015.

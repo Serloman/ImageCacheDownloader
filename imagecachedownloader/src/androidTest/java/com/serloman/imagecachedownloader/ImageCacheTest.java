@@ -1,14 +1,13 @@
 package com.serloman.imagecachedownloader;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.test.AndroidTestCase;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import com.serloman.imagecachedownloader.cache.DiskImageCache;
+import com.serloman.imagecachedownloader.cache.ImageCache;
+import com.serloman.imagecachedownloader.cache.LRUImageCache;
+import com.serloman.imagecachedownloader.cache.MixImageCache;
 
 /**
  * Created by Serloman on 15/01/2015.

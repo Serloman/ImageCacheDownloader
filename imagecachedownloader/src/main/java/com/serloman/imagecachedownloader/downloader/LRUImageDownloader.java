@@ -1,4 +1,7 @@
-package com.serloman.imagecachedownloader;
+package com.serloman.imagecachedownloader.downloader;
+
+import com.serloman.imagecachedownloader.task.DownloadImageAsyncTaskBasicFactory;
+import com.serloman.imagecachedownloader.cache.LRUImageCache;
 
 /**
  * Created by Serloman on 15/01/2015.

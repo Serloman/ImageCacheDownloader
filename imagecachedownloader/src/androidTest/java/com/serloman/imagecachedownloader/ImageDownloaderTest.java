@@ -3,11 +3,14 @@ package com.serloman.imagecachedownloader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.test.ActivityUnitTestCase;
 import android.test.AndroidTestCase;
-import android.test.InstrumentationTestCase;
-import android.test.mock.MockContext;
+
+import com.serloman.imagecachedownloader.cache.ImageCache;
+import com.serloman.imagecachedownloader.cache.NoImageCache;
+import com.serloman.imagecachedownloader.downloader.ImageDownloader;
+import com.serloman.imagecachedownloader.listener.DownloadImageListener;
+import com.serloman.imagecachedownloader.task.AbstractDownloadImageAsyncTask;
+import com.serloman.imagecachedownloader.task.DownloadImageAsyncTaskFactory;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +49,7 @@ public class ImageDownloaderTest extends AndroidTestCase {
         }
     }
 
-    private static class MockFactory implements DownloadImageAsyncTaskFactory{
+    private static class MockFactory implements DownloadImageAsyncTaskFactory {
 
         private Context context;
 
@@ -111,7 +114,7 @@ public class ImageDownloaderTest extends AndroidTestCase {
         }
     }
 
-    private static class MockImageCache extends NoImageCache{
+    private static class MockImageCache extends NoImageCache {
 
     }
 

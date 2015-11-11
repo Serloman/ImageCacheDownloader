@@ -1,6 +1,9 @@
-package com.serloman.imagecachedownloader;
+package com.serloman.imagecachedownloader.downloader;
 
 import android.content.Context;
+
+import com.serloman.imagecachedownloader.task.DownloadImageAsyncTaskBasicFactory;
+import com.serloman.imagecachedownloader.cache.MixImageCache;
 
 /**
  * Created by Serloman on 18/01/2015.

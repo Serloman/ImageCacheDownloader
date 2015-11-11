@@ -1,10 +1,13 @@
-package com.serloman.imagecachedownloader;
+package com.serloman.imagecachedownloader.cache;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+
+import com.serloman.imagecachedownloader.cache.ImageCache;
+import com.serloman.imagecachedownloader.cache.LRUImageCache;
 
 import java.io.File;
 import java.io.FileInputStream;

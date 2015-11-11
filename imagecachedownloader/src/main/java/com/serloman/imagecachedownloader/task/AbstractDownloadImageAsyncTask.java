@@ -1,7 +1,10 @@
-package com.serloman.imagecachedownloader;
+package com.serloman.imagecachedownloader.task;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+
+import com.serloman.imagecachedownloader.cache.ImageCache;
+import com.serloman.imagecachedownloader.listener.DownloadImageListener;
 
 /**
  * Created by Serloman on 20/01/2015.

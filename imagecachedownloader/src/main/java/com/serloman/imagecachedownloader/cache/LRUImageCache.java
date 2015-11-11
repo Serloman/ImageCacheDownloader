@@ -1,4 +1,4 @@
-package com.serloman.imagecachedownloader;
+package com.serloman.imagecachedownloader.cache;
 
 import android.graphics.Bitmap;
 import android.net.Uri;

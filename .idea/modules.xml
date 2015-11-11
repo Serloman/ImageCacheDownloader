@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ImageDowloaderAppTest.iml" filepath="$PROJECT_DIR$/ImageDowloaderAppTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ImageCacheDownloader.iml" filepath="$PROJECT_DIR$/ImageCacheDownloader.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/imagecachedownloader/imagecachedownloader.iml" filepath="$PROJECT_DIR$/imagecachedownloader/imagecachedownloader.iml" />
     </modules>
   </component>
 </project>
-
